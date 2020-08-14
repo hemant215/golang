@@ -1,4 +1,4 @@
-
+//script is to download 2 years visa stock data from yahoo.com
 package main
 
 // import required packages
@@ -21,7 +21,7 @@ func main() {
 
 	stockdata := []byte(newStr)
 	
-	err := ioutil.WriteFile("myfile.csv", stockdata, 0777)    
+	err := ioutil.WriteFile("visastocks.csv", stockdata, 0777)    
 	if err != nil {
   // print it out
   fmt.Println(err)
