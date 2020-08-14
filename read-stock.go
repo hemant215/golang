@@ -1,26 +1,32 @@
 
 package main
 
+// import required packages
 import (
-    "io"
-    "log"
+    "fmt"
     "net/http"
-    "os"
+    "bytes"
+	"io/ioutil"
 )
 
 func main() {
-   
-    response, err := http.Get("https://query1.finance.yahoo.com/v7/finance/download/V?period1=1534204800&period2=1597363200&interval=1d&events=history")
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer response.Body.Close()
 
-   
-    _ , error := io.Copy(os.Stdout, response.Body)
-    if error != nil {
-        log.Fatal(error)
-    }
+    //pass web link to read data
+    response, _ := http.Get("https://query1.finance.yahoo.com/v7/finance/download/V?period1=1534204800&period2=1597363200&interval=1d&events=history")
 
-    
+    // first need to convert resposne data to byte else you will get conversion error while saving to csv
+    buffer := new(bytes.Buffer)
+    buffer.ReadFrom(response.Body)
+    newStr := buffer.String()
+
+	stockdata := []byte(newStr)
+	
+	err := ioutil.WriteFile("myfile.csv", stockdata, 0777)    
+	if err != nil {
+  // print it out
+  fmt.Println(err)
+  
+      }
+	 
+	
 }
